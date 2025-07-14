@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - rydenetwork
+  rydeapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - rydenetwork
+    depends_on:
+      - mongo
+
+networks:
+  rydenetwork:
+    driver: bridge

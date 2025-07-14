@@ -1,0 +1,4 @@
+.git
+*.swp
+*.log
+docs/swagger.yaml

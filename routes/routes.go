@@ -7,9 +7,13 @@ import (
 
 // registers the user-related routes with the provided Gin router.
 func RegisterRoutes(routes *gin.Engine) {
-	routes.POST("/users", controllers.CreateUserHandler)
-	routes.GET("/users", controllers.GetAllUsersHandler)
-	routes.GET("/user/:id", controllers.GetUserByIdHandler)
-	routes.PUT("/user/:id", controllers.UpdateUserHandler)
-	routes.DELETE("/user/:id", controllers.DeleteUserHandler)
+	api := routes.Group("/api")
+	{
+		api.POST("/users", controllers.CreateUserHandler)
+		api.GET("/users", controllers.GetAllUsersHandler)
+		api.GET("/user/:id", controllers.GetUserByIdHandler)
+		api.PUT("/user/:id", controllers.UpdateUserHandler)
+		api.DELETE("/user/:id", controllers.DeleteUserHandler)
+	}
+
 }

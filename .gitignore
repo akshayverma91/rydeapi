@@ -1,0 +1,6 @@
+# Go build files
+bin/
+
+# IDE/editor files
+.vscode/
+.env

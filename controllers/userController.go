@@ -62,7 +62,7 @@ func GetAllUsersHandler(c *gin.Context) {
 // @Success 200 {object} models.User
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
-// @Router /user/{id} [get]
+// @Router /users/{id} [get]
 func GetUserByIdHandler(c *gin.Context) {
 	id := c.Param("id")
 	objectID, err := primitive.ObjectIDFromHex(id)
@@ -90,7 +90,7 @@ func GetUserByIdHandler(c *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
-// @Router /user/{id} [put]
+// @Router /users/{id} [put]
 func UpdateUserHandler(c *gin.Context) {
 	id := c.Param("id")
 	objectID, err := primitive.ObjectIDFromHex(id)
@@ -123,7 +123,7 @@ func UpdateUserHandler(c *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
-// @Router /user/{id} [delete]
+// @Router /users/{id} [delete]
 func DeleteUserHandler(c *gin.Context) {
 	id := c.Param("id")
 	objectID, err := primitive.ObjectIDFromHex(id)

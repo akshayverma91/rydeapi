@@ -16,3 +16,15 @@ use command to generate swagger using swag init
 add or update controller run again swag init
 Run project and go to http://localhost:8080/swagger/index.html 
 
+## Run Docker Container
+docker build -t rydeapi .
+docker run -p 8080:8080 rydeapi
+
+for docker compose
+to build: docker-compose build
+to start: docker-compose up
+to stop: docker-compose down
+
+
+## To run test
+go test ./tests

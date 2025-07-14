@@ -11,9 +11,9 @@ func RegisterRoutes(routes *gin.Engine) {
 	{
 		api.POST("/users", controllers.CreateUserHandler)
 		api.GET("/users", controllers.GetAllUsersHandler)
-		api.GET("/user/:id", controllers.GetUserByIdHandler)
-		api.PUT("/user/:id", controllers.UpdateUserHandler)
-		api.DELETE("/user/:id", controllers.DeleteUserHandler)
+		api.GET("/users/:id", controllers.GetUserByIdHandler)
+		api.PUT("/users/:id", controllers.UpdateUserHandler)
+		api.DELETE("/users/:id", controllers.DeleteUserHandler)
 	}
 
 }

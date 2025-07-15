@@ -11,17 +11,30 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/akshayverma91/rydeapi/config"
 	_ "github.com/akshayverma91/rydeapi/docs"
 	"github.com/akshayverma91/rydeapi/routes"
+	"github.com/akshayverma91/rydeapi/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
-	port := "8080"
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Warning: .env file not found. Reading from OS environment variables.")
+	}
+	utils.LoadJwtKey()
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default to port 8080 if not specified
+		log.Printf("Defaulting to port %s", port)
+	}
 
 	// Initialize the Gin router and MongoDB connection
 	r := gin.Default()

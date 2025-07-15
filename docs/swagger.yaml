@@ -1,12 +1,30 @@
-basePath: /api
+basePath: /
 definitions:
+  models.AuthUser:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+    type: object
+  models.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
   models.User:
     properties:
       _id:
+        description: 'read only: true'
         type: string
       address:
         type: string
       created_at:
+        description: 'read only: true'
         type: string
       description:
         type: string
@@ -20,9 +38,72 @@ info:
   contact: {}
   description: This is the API documentation for the Ryde api application.
   title: Ryde API
-  version: "1.0"
+  version: "2.0"
 paths:
-  /users:
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Login credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login and get JWT token
+      tags:
+      - Auth
+  /api/auth/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User registration info
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/models.AuthUser'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register a new user
+      tags:
+      - Auth
+  /api/v1/users:
     get:
       produces:
       - application/json
@@ -39,6 +120,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get all users
       tags:
       - Users
@@ -67,10 +150,12 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Create a new user
       tags:
       - Users
-  /users/{id}:
+  /api/v1/users/{id}:
     delete:
       parameters:
       - description: User ID
@@ -99,6 +184,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Delete user by ID
       tags:
       - Users
@@ -128,6 +215,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get user by ID
       tags:
       - Users
@@ -165,9 +254,16 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Update user by ID
       tags:
       - Users
 schemes:
-- http
+- ""
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

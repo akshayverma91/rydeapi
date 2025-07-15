@@ -1,9 +1,12 @@
 // @title Ryde API
-// @version 1.0
+// @version 2.0
 // @description This is the API documentation for the Ryde api application.
 // @host localhost:8080
-// @BasePath /api
-// @schemes http
+// @BasePath /
+// @schemes
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 package main
 
 import (
@@ -22,10 +25,13 @@ func main() {
 
 	// Initialize the Gin router and MongoDB connection
 	r := gin.Default()
+	r.Use(gin.Logger())
 	config.InitializeMongoDB()
 	routes.RegisterRoutes(r)
 
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	if gin.Mode() != gin.ReleaseMode {
+		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	}
 
 	r.Run(":" + port) // Start the server on the specified port
 	log.Println("Server running on port:", port)

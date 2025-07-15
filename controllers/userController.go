@@ -13,12 +13,13 @@ import (
 // It expects a JSON payload with user details and returns the created user's ID or an error.
 // @Summary Create a new user
 // @Tags Users
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param user body models.User true "User Body"
 // @Success 201 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /users [post]
+// @Router /api/v1/users [post]
 func CreateUserHandler(c *gin.Context) {
 	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -39,10 +40,11 @@ func CreateUserHandler(c *gin.Context) {
 // It returns a list of users or an error if the operation fails.
 // @Summary Get all users
 // @Tags Users
+// @Security BearerAuth
 // @Produce json
 // @Success 200 {array} models.User
 // @Failure 500 {object} map[string]string
-// @Router /users [get]
+// @Router /api/v1/users [get]
 func GetAllUsersHandler(c *gin.Context) {
 	users, err := repositories.GetAllUsers()
 	if err != nil {
@@ -57,12 +59,13 @@ func GetAllUsersHandler(c *gin.Context) {
 // It expects the user ID as a URL parameter and returns the user details or an error if
 // @Summary Get user by ID
 // @Tags Users
+// @Security BearerAuth
 // @Param id path string true "User ID"
 // @Produce json
 // @Success 200 {object} models.User
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
-// @Router /users/{id} [get]
+// @Router /api/v1/users/{id} [get]
 func GetUserByIdHandler(c *gin.Context) {
 	id := c.Param("id")
 	objectID, err := primitive.ObjectIDFromHex(id)
@@ -84,13 +87,14 @@ func GetUserByIdHandler(c *gin.Context) {
 // It expects the user ID as a URL parameter and the updated user details in the request body
 // @Summary Update user by ID
 // @Tags Users
+// @Security BearerAuth
 // @Param id path string true "User ID"
 // @Param user body models.User true "Updated User Body"
 // @Produce json
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
-// @Router /users/{id} [put]
+// @Router /api/v1/users/{id} [put]
 func UpdateUserHandler(c *gin.Context) {
 	id := c.Param("id")
 	objectID, err := primitive.ObjectIDFromHex(id)
@@ -118,12 +122,13 @@ func UpdateUserHandler(c *gin.Context) {
 // It expects the user ID as a URL parameter and returns a success message or an error if
 // @Summary Delete user by ID
 // @Tags Users
+// @Security BearerAuth
 // @Param id path string true "User ID"
 // @Produce json
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
-// @Router /users/{id} [delete]
+// @Router /api/v1/users/{id} [delete]
 func DeleteUserHandler(c *gin.Context) {
 	id := c.Param("id")
 	objectID, err := primitive.ObjectIDFromHex(id)

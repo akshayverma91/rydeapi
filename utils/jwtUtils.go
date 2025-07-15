@@ -1,16 +1,28 @@
 package utils
 
 import (
+	"log"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var jwtKey = []byte("my_secret_key")
+var JwtKey []byte
 
 type JWTClaims struct {
 	Email string `json:"email"`
 	jwt.RegisteredClaims
+}
+
+func LoadJwtKey() {
+
+	// Read the jwt secret key from the environment variable
+	key := os.Getenv("JWT_SECRET_KEY")
+	if key == "" {
+		log.Fatal("JWT_SECRET_KEY environment variable not set. Did you create a .env file?")
+	}
+	JwtKey = []byte(key)
 }
 
 func GenerateJwtToken(email string) (string, error) {
@@ -23,7 +35,7 @@ func GenerateJwtToken(email string) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(jwtKey)
+	return token.SignedString(JwtKey)
 }
 
 func ValidateJwtToken(tokenString string) (*JWTClaims, error) {
@@ -31,7 +43,7 @@ func ValidateJwtToken(tokenString string) (*JWTClaims, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, jwt.ErrSignatureInvalid
 		}
-		return jwtKey, nil
+		return JwtKey, nil
 	})
 
 	if err != nil || !token.Valid {

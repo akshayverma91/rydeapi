@@ -1,22 +1,26 @@
-version: '3.8'
 services:
   mongo:
-    image: mongo
+    image: mongo:7
+    container_name: ryde-mongo
     ports:
       - "27017:27017"
-    networks:
-      - rydenetwork
-  rydeapi:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: rydeapi
+
+  ryde-api:
+    build: .
+    container_name: ryde-api
     ports:
-      - "8080:8080"
-    networks:
-      - rydenetwork
+      - "${PORT:-8080}:8080"
     depends_on:
       - mongo
+    env_file:
+      - .env
+    environment:
+      MONGO_URI: mongodb://mongo:27017
+    restart: unless-stopped
 
-networks:
-  rydenetwork:
-    driver: bridge
+volumes:
+  mongo-data:

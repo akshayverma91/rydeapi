@@ -26,7 +26,7 @@ func JwtAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		c.Set("userEmail", claims.Email)
+		c.Set("email", claims.Email)
 		c.Next()
 	}
 }

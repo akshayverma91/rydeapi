@@ -26,4 +26,13 @@ func RegisterRoutes(routes *gin.Engine) {
 		authRoutes.DELETE("/:id", controllers.DeleteUserHandler)
 	}
 
+	// v2 routes for following functionality
+	usersV2 := api.Group("/v2/users")
+	usersV2.Use(middleware.JwtAuthMiddleware())
+	{
+		usersV2.POST("/:id/follow", controllers.FollowUserHandler)
+		usersV2.POST("/:id/unfollow", controllers.UnfollowUserHandler)
+		usersV2.GET("/:id/followers", controllers.GetFollowersHandler)
+		usersV2.GET("/:id/following", controllers.GetFollowingHandler)
+	}
 }

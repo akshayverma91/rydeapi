@@ -10,6 +10,7 @@ import (
 )
 
 var UserCollection *mongo.Collection
+var FollowCollection *mongo.Collection
 
 func InitializeMongoDB() {
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
@@ -31,4 +32,5 @@ func InitializeMongoDB() {
 	log.Println("Connected to MongoDB!")
 	db := client.Database("ryde")
 	UserCollection = db.Collection("users")
+	FollowCollection = db.Collection("follows")
 }
